@@ -121,7 +121,7 @@ Detailed analysis of the existing system lives in [`docs/`](docs/):
 git clone https://github.com/PSMRI/Helpline104-UI.git
 cd Helpline104-UI
 
-npm install --force
+npm install --legacy-peer-deps
 npm start          # dev server at http://localhost:4200/#/login
 ```
 
