@@ -1,7 +1,4 @@
 # 📚 Documentation Index — C4GT 2026 Internship
-
-Your internship documentation is organized into three areas: planning, tracking, and research. This is your map.
-
 ---
 
 ## 🗂️ What You Have
