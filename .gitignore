@@ -1,0 +1,59 @@
+# .gitignore — C4GT 2026 Internship
+
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+.angular/
+out/
+.next/
+.nuxt/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE + Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+# (tracked via daily-logs/ and weekly-logs/)
+*.log
+
+# Temp files
+*.tmp
+*.bak
+*~
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+release.properties
+
+# JBoss WAR output
+*.war
