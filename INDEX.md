@@ -1,7 +1,7 @@
 # 📚 Documentation Index — C4GT 2026 Internship
 ---
 
-## 🗂️ What You Have
+## 🗂️ Repository Contents
 
 ```
 c4gt-2026-amrit/
@@ -9,7 +9,7 @@ c4gt-2026-amrit/
 ├── README.md                    ← Project overview + internship details
 ├── AGENTS.md                    ← Repository guidelines for Claude
 ├── QUICK_START.md               ← Daily workflow guide
-├── INDEX.md                     ← YOU ARE HERE
+├── INDEX.md                     ← Index
 │
 ├── docs/
 │   ├── decisions.md             ← Architectural decisions
@@ -50,21 +50,21 @@ Week 2–13 logs will be filled as work progresses.
 
 ---
 
-## 💾 How to Use This System
+## 💾 Using This Repository
 
 ### Daily
 - Open `weekly-logs/week-NN.md`
-- Log what you did today (bullets under "What I Did")
+- Log what was completed today (bullets under "What I Did")
 - Note any blockers immediately
 
-### When done with a task
-- Update the checkbox in your week log
+### When a task is completed
+- Update the checkbox in the week log
 - If it's a design decision, add to `docs/decisions.md`
 - If it's a blocker, add to `docs/blockers.md`
 
 ### Research & spikes
-- Save findings to `research/` as you discover them
-- Reference them in your weekly log
+- Save findings to `research/` as they're discovered
+- Reference them in the weekly log
 
 ---
 
@@ -80,4 +80,4 @@ Week 2–13 logs will be filled as work progresses.
 
 ---
 
-**Questions?** Check [QUICK_START.md](QUICK_START.md) or ask your mentor Dr. Mithun James.
+**Questions?** Check [QUICK_START.md](QUICK_START.md) or contact Dr. Mithun James (mentor).

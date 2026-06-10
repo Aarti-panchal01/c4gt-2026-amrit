@@ -1,6 +1,6 @@
 # Documentation Structure — C4GT 2026 AMRIT Helpline104-UI
 
-How to organize and maintain your internship documentation.
+How to organize and maintain this project's documentation.
 
 ---
 
@@ -50,14 +50,14 @@ c4gt-2026-amrit/
 **Daily standup** — quick snapshot of each day's work.
 
 - One file per day (D1-June10-26.md through D92-Sep10-26.md)
-- Format: "What I did today" (bullets), blockers, learning, tomorrow's plan
+- Format: "What was completed" (bullets), blockers, learning, next day's plan
 - See `readme-daily-logs.md` for format guide
 
 ### `weekly-logs/`
-**Your journal** — weekly progress, daily standup, learnings.
+**Progress journal** — weekly progress, daily standup, learnings.
 
 - One file per week (week-01.md through week-13.md)
-- Updated daily with what you did, blockers hit, learnings
+- Updated daily with what was completed, blockers hit, learnings
 - Metrics (services migrated, tests passing, etc.) updated end-of-week
 - See `readme-weekly-logs.md` for format guide
 
@@ -73,12 +73,12 @@ c4gt-2026-amrit/
 
 ---
 
-## How to Update Daily
+## Daily Updates
 
 1. **Open** `daily-logs/DN-MonDD-YY.md` (e.g., D2-June11-26.md)
 2. **Fill** "What I Did" with bullets
 3. **Note** any blockers immediately (don't wait till Friday)
-4. **Check** your learning/discovery — add to docs/ if it's a decision or blocker
+4. **Check** learnings/discoveries — add to docs/ if it's a decision or blocker
 
 At **end of week:**
 1. **Summarize** in `weekly-logs/week-NN.md`

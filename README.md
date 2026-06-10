@@ -30,22 +30,22 @@
 
 **Helpline104-UI** is the web front-end used by call-center agents and clinical staff of India's **"104" public-health helpline** — providing medical advice, counseling, grievance resolution, directory services, epidemic-outbreak information, medicine prescription, and maternal/child death review. It is one module of the larger **AMRIT** (Accessible Medical Records via Integrated Technology) EHR platform.
 
-This repository documents my C4GT 2026 internship work: re-platforming the application from a legacy **Angular 4.1.3** codebase to **Angular 20**, and replacing its abandoned UI stack (Angular Material beta, `md2`, jQuery/Bootstrap 3) with **ZardUI** (a modern Tailwind + Angular CDK component library).
+This repository documents the C4GT 2026 internship: re-platforming the application from a legacy **Angular 4.1.3** codebase to **Angular 20**, and replacing its abandoned UI stack (Angular Material beta, `md2`, jQuery/Bootstrap 3) with **ZardUI** (a modern Tailwind + Angular CDK component library).
 
-- **Intern:** Aarti Panchal
-- **Internship period:** **June 10 – September 10, 2026** (13 weeks)
+- **Lead Contributor:** Aarti Panchal
+- **Project period:** **June 10 – September 10, 2026** (13 weeks)
 - **Documentation repo:** https://github.com/Aarti-panchal01/c4gt-2026-amrit
 
 ---
 
-## 👩‍💻 My Role
+## 👩‍💻 Project Scope
 
-As the C4GT contributor on this project, I am responsible for:
+This migration includes the following key work streams:
 
 - **Codebase analysis** — documenting the existing Angular 4 architecture (auth flow, call flow, ~67 services, the custom HTTP interceptor pattern) and identifying migration blockers.
 - **Phase 1 — Framework migration:** re-platforming to Angular 20 (standalone components, functional `HttpInterceptor`s, RxJS 7, lazy routing, `angular.json`/esbuild build).
 - **Phase 2 — UI migration:** integrating **ZardUI** + Tailwind CSS, replacing Angular Material/`md2`/jQuery components.
-- **Quality & handover:** test migration (Karma/Jasmine → modern setup, Protractor → Playwright), visual/accessibility QA, and maintaining this documentation.
+- **Quality & handover:** test migration (Karma/Jasmine → modern setup, Protractor → Playwright), visual/accessibility QA, and maintaining the documentation.
 
 ---
 

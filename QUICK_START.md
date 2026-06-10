@@ -7,21 +7,21 @@ How to log your work each day.
 ## Morning
 
 1. Open `daily-logs/DN-MonDD-YY.md` (e.g., D2-June11-26.md)
-2. Fill "Task" — what are you starting?
+2. Fill "Task" — what's being started?
 3. Get coding
 
 ## During the Day
 
-Found a **blocker**? → Add to daily file immediately (don't wait)
+Found a **blocker**? → Add to the daily file immediately (don't wait)
 
-Made a **discovery**? → Add to daily file under "Learnings"
+Made a **discovery**? → Add to the daily file under "Learnings"
 
 ---
 
 ## End of Day
 
 1. Open `daily-logs/DN-MonDD-YY.md`
-2. Fill "What I Did" — bullets of actual work
+2. Fill "What I Did" — bullets of completed work
 3. Fill "Blockers Hit" — any show-stoppers
 4. Fill "Learnings" — new patterns, gotchas, decisions made
 5. Fill "Tomorrow" — what's next
@@ -41,7 +41,7 @@ Made a **discovery**? → Add to daily file under "Learnings"
 
 | File | Purpose | Update |
 |------|---------|--------|
-| `daily-logs/DN-MonDD-YY.md` | Today's standup | Daily |
+| `daily-logs/DN-MonDD-YY.md` | Daily standup | Daily |
 | `weekly-logs/week-NN.md` | Weekly summary + metrics | Friday |
 | `docs/blockers.md` | Persistent blockers | As they surface |
 | `docs/decisions.md` | Design choices | As they're made |

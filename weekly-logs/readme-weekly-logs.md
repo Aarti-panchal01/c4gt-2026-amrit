@@ -4,7 +4,7 @@ One file per week, named `week-01.md` through `week-13.md` (Jun 10 – Sep 10, 2
 
 ## What Goes in Each File
 
-**Summary:** 1–2 sentences on what you accomplished this week
+**Summary:** 1–2 sentences on what was accomplished this week
 
 **Completed:** List of tasks + outcomes
 
@@ -12,11 +12,11 @@ One file per week, named `week-01.md` through `week-13.md` (Jun 10 – Sep 10, 2
 
 **Learnings & Gotchas:** Patterns discovered, issues hit, decisions made
 
-**Risks & Mitigations:** What could go wrong, how you'll handle it
+**Risks & Mitigations:** Risks identified, mitigation strategies
 
 **Metrics:** Services migrated, tests passing, bundle size, etc.
 
-**Next Week's Plan:** What you're starting Monday
+**Next Week's Plan:** What will start Monday
 
 ## Weekly Entry Template
 
@@ -24,7 +24,7 @@ One file per week, named `week-01.md` through `week-13.md` (Jun 10 – Sep 10, 2
 # Week 1: Jun 10–16 — Foundation & ZardUI Spike
 
 ## Summary
-Set up Angular 20 workspace scaffolding + dual-build CI. Conducted ZardUI component-coverage spike to validate it covers table/datepicker/dialog needs.
+Angular 20 workspace scaffolding + dual-build CI set up. ZardUI component-coverage spike conducted to validate table/datepicker/dialog coverage.
 
 ## Completed ✅
 - [x] New Angular 20 standalone workspace (Node 22, TS 5.6+, esbuild)
@@ -35,9 +35,9 @@ Set up Angular 20 workspace scaffolding + dual-build CI. Conducted ZardUI compon
 - [ ] Commit workspace to feature/angular-20-prep branch
 
 ## Learnings & Gotchas 💡
-- ZardUI tables are thin — will need CDK DataSource or custom wrapper
+- ZardUI tables are thin — CDK DataSource or custom wrapper needed
 - Angular 20 esbuild: ~4s build time (vs Webpack 12s)
-- Keep Bootstrap 3 CSS until Phase 2 to avoid layout regressions
+- Bootstrap 3 CSS should be retained until Phase 2 to avoid layout regressions
 
 ## Risks & Mitigations ⚠️
 - **Risk:** ZardUI table gap might affect Phase 2
