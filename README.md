@@ -10,7 +10,23 @@
 
 ---
 
-## 📋 Overview
+## �️ Table of Contents
+
+1. [Overview](#-overview)
+2. [My Role](#-my-role)
+3. [Tech Stack](#-tech-stack)
+4. [Migration Scope](#-migration-scope)
+5. [Project Timeline](#-project-timeline)
+6. [Weekly Logs](#-weekly-logs)
+7. [Architecture Notes](#-architecture-notes)
+8. [Getting Started](#-getting-started)
+9. [Project Links](#-project-links)
+10. [Mentorship](#-mentorship)
+11. [License](#-license)
+
+---
+
+## �📋 Overview
 
 **Helpline104-UI** is the web front-end used by call-center agents and clinical staff of India's **"104" public-health helpline** — providing medical advice, counseling, grievance resolution, directory services, epidemic-outbreak information, medicine prescription, and maternal/child death review. It is one module of the larger **AMRIT** (Accessible Medical Records via Integrated Technology) EHR platform.
 
@@ -33,23 +49,7 @@ As the C4GT contributor on this project, I am responsible for:
 
 ---
 
-## 🗂️ Table of Contents
-
-1. [Overview](#-overview)
-2. [My Role](#-my-role)
-3. [Tech Stack](#-tech-stack)
-4. [Migration Scope](#-migration-scope)
-5. [Project Timeline](#-project-timeline)
-6. [Weekly Logs](#-weekly-logs)
-7. [Architecture Notes](#-architecture-notes)
-8. [Getting Started](#-getting-started)
-9. [Project Links](#-project-links)
-10. [Mentorship](#-mentorship)
-11. [License](#-license)
-
----
-
-## 🛠️ Tech Stack
+## ️ Tech Stack
 
 | Area | From (Angular 4) | To (Angular 20) |
 |------|------------------|-----------------|
