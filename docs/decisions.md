@@ -40,32 +40,7 @@ The following decisions (D3–D10) are design drafts based on initial assumption
 
 Once confirmed, they will move to the **CONFIRMED** section. Until then, treat as proposals.
 
-### D3: HttpContext Tokens for Auth/Silent Logic
-
-**Date:** Jun 10, 2026 (Day 1)
-**Context:** 13-week schedule with Phase 1 (Angular 4→20) + Phase 2 (ZardUI integration)
-**Decision:** In Phase 1, replace Material/`md2`/jQuery UI with only a mechanical Md*→Mat* rename. Skip Material M3 theming + MDC visual-QA until Phase 2 when ZardUI replaces it wholesale.
-
-**Rationale:**
-- 138 templates × 2 (Material refactor + ZardUI refactor) = 276 template edits without the shortcut.
-- Material M3 + MDC DOM changes are expensive (layout, spacing, component internals all change).
-- ZardUI will replace Material + `md2` + jQuery anyway, rendering Phase 1 Material work throw-away.
-- **By deferring UI:** materialize Phase 1 as "app compiles on Angular 20 + HttpClient + RxJS 7 + lazy routes" (no visual QA yet).
-- Phase 2 does the visual work once, against ZardUI.
-
-**Alternatives Considered:**
-1. Full Material M3 upgrade in Phase 1 — adds 2–3 weeks; work is discarded when ZardUI replaces it.
-2. Skip Material entirely in Phase 1, jump to ZardUI — violates milestone clarity; Phase 1 deliverable becomes "works but looks broken."
-
-**Outcome:**
-- Accepted. Allows 13-week timeline.
-- Material beta → Mat* rename only (Wk 6, mechanical find-replace).
-- Visual/MDC/Tailwind validation deferred to Phase 2 (Wks 10–13).
-- Will track any layout regressions and defer fixing to Phase 2.
-
----
-
-## D3: HttpContext Tokens for Auth/Silent Logic (vs. Two-Class Distinction)
+### D3: HttpContext Tokens for Auth/Silent Logic (vs. Two-Class Distinction)
 
 **Date:** Jun 10, 2026 (design phase)
 **Context:** Replace custom `Http` subclasses with functional `HttpInterceptor`s
