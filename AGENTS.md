@@ -10,7 +10,7 @@ This document defines conventions, architecture patterns, and guidance for Claud
 
 - **Scope:** 118 components, 65 services, 138 templates, single 530-line app.module.ts
 - **Internship period:** Jun 10 – Sep 10, 2026 (13 weeks)
-- **Code repo:** https://github.com/PSMRI/Helpline104-UI (branch: feature/angular-20-migration)
+- **Code repo:** https://github.com/PSMRI/Helpline104-UI (migration branch: TBD — to be created after Jun 15 planning meeting)
 - **Documentation repo:** https://github.com/Aarti-panchal01/c4gt-2026-amrit (this repo)
 
 ---
@@ -51,14 +51,6 @@ research/
 - **Why:** Avoid touching 138 templates twice (Material refactor + ZardUI refactor)
 - **Solution:** Phase 1 = mechanical Md*→Mat* rename only; skip Material M3/MDC visual QA
 - **Implication:** Phase 1 UI looks rough; visual polishing happens in Phase 2 when ZardUI replaces Material
-
----
-
-## Design Drafts (Pending Jun 15 Team Alignment)
-
-> **NOTE:** Decisions D3–D10 below are design drafts pending team confirmation on Jun 15. Do NOT treat as approved yet. Detailed decisions will be finalized after this meeting.
-
-See `docs/decisions.md` for current status of all design choices.
 
 ---
 
