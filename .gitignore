@@ -23,6 +23,9 @@ out/
 .env.test.local
 .env.production.local
 
+# Project-specific (session files, local context)
+docs/claude-context.md
+
 # IDE + Editor
 .vscode/
 .idea/

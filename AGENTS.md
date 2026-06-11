@@ -19,21 +19,26 @@ This document defines conventions, architecture patterns, and guidance for Claud
 
 ```
 docs/
-├── decisions.md             # Architectural decisions
-└── blockers.md              # Known blockers + open questions
+├── decisions.md                     # Architectural decisions
+├── blockers.md                      # Known blockers + open questions
+├── migration-plan.md                # 13-week Phase 1 + Phase 2 breakdown
+├── architecture/                    # Detailed architecture analysis
+│   ├── auth-flow.md                 # Login sequence, tokens, guards
+│   ├── call-flow.md                 # End-to-end call lifecycle
+│   ├── services-catalog.md          # All 67 services + endpoints
+│   └── http-interceptor.md          # Current pattern + Angular 20 replacement
+└── research/                        # Spike findings & comparison
+    └── 104-vs-1097-comparison.md    # Shared code analysis + Common-UI tiers
 
 daily-logs/
-├── readme-daily-logs.md     # Daily log guidelines
+├── readme-daily-logs.md             # Daily log guidelines
 └── D1-June10-26.md, D2-June11-26.md, ... D92-Sep10-26.md
 
 weekly-logs/
-├── readme-weekly-logs.md    # Weekly log guidelines
-├── week-01.md               # Jun 10–16
-├── week-02.md               # Jun 17–23 (to be filled)
-└── ... week-13.md           # Sep 2–10 (to be filled)
-
-research/
-└── [spike findings, as discovered]
+├── readme-weekly-logs.md            # Weekly log guidelines
+├── week-01.md                       # Jun 10–16
+├── week-02.md                       # Jun 17–23 (to be filled)
+└── ... week-13.md                   # Sep 2–10 (to be filled)
 ```
 
 ---

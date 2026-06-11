@@ -15,7 +15,15 @@ c4gt-2026-amrit/
 │
 ├── docs/
 │   ├── decisions.md                   # Architectural decisions
-│   └── blockers.md                    # Known blockers + open questions
+│   ├── blockers.md                    # Known blockers + open questions
+│   ├── migration-plan.md              # 13-week Phase 1 + Phase 2 breakdown
+│   ├── architecture/                  # Detailed architecture analysis
+│   │   ├── auth-flow.md               # Login sequence, tokens, guards
+│   │   ├── call-flow.md               # End-to-end call lifecycle
+│   │   ├── services-catalog.md        # All 67 services + endpoints
+│   │   └── http-interceptor.md        # Current pattern + Angular 20 replacement
+│   └── research/                      # Spike findings & comparison
+│       └── 104-vs-1097-comparison.md  # Shared code analysis + Common-UI tiers
 │
 ├── daily-logs/
 │   ├── readme-daily-logs.md           # Daily log format + guidelines
@@ -28,9 +36,6 @@ c4gt-2026-amrit/
 │   ├── week-01.md                     # Jun 10–16 progress
 │   ├── week-02.md                     # Jun 17–23 progress
 │   └── ... week-13.md                 # Sep 2–10 progress
-│
-├── research/
-│   └── [spike findings, as discovered]
 │
 └── _archive/
     └── [old files after internship ends]
