@@ -213,6 +213,40 @@ Once confirmed, they will move to the **CONFIRMED** section. Until then, treat a
 
 ---
 
+### D11: Monorepo for 104 + 1097 Migration
+
+**Date:** Jun 11, 2026
+**Context:** Helpline1097-UI shares ~60-70% code with Helpline104-UI. 
+Another C4GT intern (Madhav Sharma) is doing 1097 simultaneously. 
+Gopi Kishan (Teams) proposed doing both together since we're starting fresh.
+Dr. Mithun is debating.
+
+**Decision:** ⏳ PENDING — confirm with Dr. Mithun on Jun 15.
+
+**Question:** Should 104 + 1097 be migrated together in a monorepo with 
+a shared @amrit/common-ui library?
+
+**Rationale for yes:**
+- ~60-70% shared code; migrating it twice is wasteful
+- 1097's token.interceptor.ts is the better HTTP layer starting point
+- Tier 1 files (Loader, SessionStorage, utc-date pipe, dialogs) are byte-identical
+- Setup cost is low since we're starting fresh anyway
+- Common-UI becomes a proper shared library from day one, not an afterthought
+
+**Rationale for no:**
+- Adds coordination overhead between two interns
+- Scope creep risk for both projects
+- Each intern may move at different pace
+
+**Impact if yes:** Coordinate with Madhav from Week 1. Build shared HTTP/auth 
+layer together. Start from 1097's token.interceptor.ts for HTTP layer.
+
+**Impact if no:** Migrate independently; share learnings informally.
+
+**Outcome:** ⏳ PENDING — Jun 15 planning meeting.
+
+---
+
 ## Next Entry
 
 Add entries here as you make decisions during the internship. Format:
