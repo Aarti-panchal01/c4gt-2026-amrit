@@ -10,10 +10,10 @@
 
 ---
 
-## �️ Table of Contents
+## 🗂️ Table of Contents
 
 1. [Overview](#-overview)
-2. [My Role](#-my-role)
+2. [Project Scope](#-project-scope)
 3. [Tech Stack](#-tech-stack)
 4. [Migration Scope](#-migration-scope)
 5. [Project Timeline](#-project-timeline)
@@ -26,7 +26,7 @@
 
 ---
 
-## �📋 Overview
+## 📋 Overview
 
 **Helpline104-UI** is the web front-end used by call-center agents and clinical staff of India's **"104" public-health helpline** — providing medical advice, counseling, grievance resolution, directory services, epidemic-outbreak information, medicine prescription, and maternal/child death review. It is one module of the larger **AMRIT** (Accessible Medical Records via Integrated Technology) EHR platform.
 
@@ -49,7 +49,7 @@ This migration includes the following key work streams:
 
 ---
 
-## ️ Tech Stack
+## 🛠️ Tech Stack
 
 | Area | From (Angular 4) | To (Angular 20) |
 |------|------------------|-----------------|
@@ -98,19 +98,22 @@ The codebase (≈118 components, 65 services, 138 templates) is migrated as a **
 
 | Week | Dates | Summary | Log |
 |------|-------|---------|-----|
-| 1 | Jun 10–16 | Workspace scaffolding, ZardUI spike | [week-01](weekly-logs/week-01.md) |
+| 1 | Jun 10–16 | Codebase analysis, architecture docs, migration plan | [week-01](weekly-logs/week-01.md) |
 | 2–13 | Jun 17–Sep 10 | TBD (planning session Jun 15) | pending |
 
 ---
 
 ## 🏛️ Architecture Notes
 
-Detailed analysis of the existing system lives in [`docs/`](docs/):
+Detailed analysis of the existing system lives in [`docs/architecture/`](docs/architecture/):
 
-- **Authentication & login flow** — crypto-js encryption, multi-role login, route guards, session handling
-- **End-to-end call flow** — C-Zentrix CTI integration, screen-pop, case-sheet, CDSS, closure
-- **Services catalog** — all 67 services and their backend microservice targets
-- **HTTP interceptor pattern** — the custom `Http`-subclass approach and its modern equivalent
+- **Authentication & login flow** — crypto-js encryption, multi-role login, route guards, session handling ([auth-flow.md](docs/architecture/auth-flow.md))
+- **End-to-end call flow** — C-Zentrix CTI integration, screen-pop, case-sheet, CDSS, closure ([call-flow.md](docs/architecture/call-flow.md))
+- **Services catalog** — all 67 services and their backend microservice targets ([services-catalog.md](docs/architecture/services-catalog.md))
+- **HTTP interceptor pattern** — the custom `Http`-subclass approach and its modern equivalent ([http-interceptor.md](docs/architecture/http-interceptor.md))
+
+**13-week Migration Plan:**
+See [`docs/migration-plan.md`](docs/migration-plan.md) for the full breakdown: Phase 1 Angular 20 migration (Weeks 1–9), Phase 2 ZardUI integration (Weeks 10–13), with risk register and critical path analysis.
 
 ---
 
@@ -136,9 +139,9 @@ npm start          # dev server at http://localhost:4200/#/login
 | Helpline104-UI (app repo) | https://github.com/PSMRI/Helpline104-UI |
 | Helpline104-UI DeepWiki | https://deepwiki.com/PSMRI/Helpline104-UI |
 | Piramal Swasthya (PSMRI) | https://piramalswasthya.org/ |
-| ZardUI | https://www.zardui.com/ |
+| ZardUI | https://zardui.com/docs/version-support |
 | Angular | https://angular.dev/ |
-| Community (Discord) | https://discord.gg/FVQWsf5ENS |
+| C4GT Discord | https://discord.gg/FVQWsf5ENS |
 
 ---
 
@@ -159,5 +162,5 @@ See the AMRIT repository (https://github.com/PSMRI/AMRIT) for details.
 
 ---
 
-**Last Updated:** Jun 10, 2026 (Day 1)
-**Status:** ⏳ Day 1 setup complete; team planning meeting Jun 15
+**Last Updated:** Jun 11, 2026 (Day 2)
+**Status:** ⏳ Day 1 + Day 2 complete — architecture analysis done; team planning meeting Jun 15
