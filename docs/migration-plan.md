@@ -1,207 +1,301 @@
-# Migration Plan — AMRIT Helpline104-UI
-> Angular 4.1.3 → Angular 20 + ZardUI  
-> June 10 – September 10, 2026 (13 weeks)  
-> Status: DRAFT — pending confirmation at Jun 15 planning meeting  
-> Last updated: Jun 11, 2026
+# Helpline104-UI → Angular 20 + ZardUI Migration Plan
 
-## Strategy & Assumptions
-
-- **Approach:** Fresh-workspace re-platform, NOT incremental ng update
-- **Why not ng update:** @angular/http removed (v5+), RxJS 5→6 break (v6+), 
-  Material Md* removal (v9+), md2 dead, .angular-cli.json removed (v6+), 
-  8 abandoned libs with no compatible intermediate version
-- **Key efficiency:** Do UI layer once — Phase 1 gets app running on Angular 20 
-  with only mechanical Md*→Mat* rename. Phase 2 replaces Material/md2/jQuery 
-  with ZardUI. Avoids touching 138 templates twice.
-- **Critical path:** HTTP layer (Wk2) → services (Wk3–5) → components (Wk6–9)
-- **ZardUI caveat:** Verify component coverage in Wk1 (tables, datepicker, 
-  autocomplete). Keep CDK primitives as fallback for any gaps.
-
-> ⚠️ Pending Jun 15 confirmation:
-> - Monorepo for 104 + 1097 (yes/no)?
-> - Approach: two-phase upgrade OR fresh repo + copy features with ZardUI from day one?
-> - Coordination with Madhav (1097 intern) on shared code?
+> **Project:** Migrate AMRIT Helpline 104-UI from Angular 4.1.3 to Angular 20 + ZardUI
+> **Approach:** Fresh repo — rebuild feature-by-feature, **not** an in-place upgrade
+> **Author:** Aarti Panchal (C4GT 2026 intern, Piramal Swasthya / AMRIT)
+> **Mentor:** Dr. Mithun James
+> **Old repo:** https://github.com/PSMRI/Helpline104-UI (Angular 4.1.3)
+> **New repo:** https://github.com/PSMRI/Helpline104-UI-NEXT (Angular 20, scaffolded)
+> **Timeline:** 10 Jun 2026 → 10 Sep 2026 (~13 weeks)
+> **Working branch:** `angular-zard-migration` → small PRs → merge to `main` only after full QA
 
 ---
 
-## Phase 1 — Angular 4 → Angular 20 (Weeks 1–9, Jun 10 – Aug 11)
+## 1. Why a fresh repo (not an upgrade)
 
-### Week 1 (Jun 10–16) — Foundation & Scaffolding
-**Goal:** Working Angular 20 workspace + ZardUI coverage validated
+The old app is **Angular 4.1.3** — six major architecture generations behind Angular 20. A direct upgrade is not realistic because nearly every foundational API the old code relies on has been removed or replaced:
 
-- New Angular 20 workspace: bootstrapApplication, angular.json, esbuild, 
-  Node 20.11+/22, TS 5.6+, Dart sass
-- Replace tslint + codelyzer → angular-eslint + Prettier
-- Port src/environments/* → fileReplacements in angular.json
-- Clean polyfills.ts (drop core-js, keep zone.js 0.15)
-- Port version.js postinstall hook (git-version.json injection)
-- Install @angular/material@20 + @angular/cdk@20 (temporary, mechanical use)
-- Stand up dual-build CI (old WAR build + new Angular 20 build)
-- **Spike:** ZardUI component coverage — table, datepicker, dialog, tabs, 
-  pagination, autocomplete. Document gaps in research/zardui-coverage.md
+| Old (Angular 4) | Angular 20 |
+|---|---|
+| `@angular/http` (`Http`, `XHRBackend`, `RequestOptions`) | `HttpClient` + functional interceptors |
+| NgModules (`app.module.ts` is ~870 lines, one giant module) | Standalone components, no NgModule |
+| `@angular/material` **2.0.0-beta.11** + `md2 0.0.18` (the `md-*` API) | Removed entirely → **ZardUI** |
+| RxJS 5.4 (`.map()`, `rxjs/Rx`, `Observable.merge`) | RxJS 7.8 (`.pipe(map())`) + **Signals** |
+| Template-driven `ngModel` everywhere | Reactive forms / Signals |
+| Zone.js change detection | **Zoneless** (`provideZonelessChangeDetection`) |
+| jQuery + Bootstrap carousels for navigation | Angular Router + ZardUI |
 
-### Week 2 (Jun 17–23) — HTTP Layer + Core Infra ⚠️ HIGHEST RISK
-**Goal:** All HTTP infrastructure on HttpClient + functional interceptors
-
-**Files to replace:**
-- http.interceptor.ts → functional HttpInterceptor
-- http.securityinterceptor.ts → functional HttpInterceptor (silent mode)
-- http.factory.ts → deleted
-- http.security.factory.ts → deleted
-
-**What to build:**
-- provideHttpClient(withInterceptors([appInterceptor]))
-- HttpContext tokens: IS_SILENT_REQUEST (replaces two-class distinction)
-- Loader logic: add request ref-counting (fix concurrent-spinner bug)
-- 401/403 handling: alert + sessionStorage.clear() + redirect
-- statusCode 5002 handling: confirm-dialog + BehaviorSubject force-logout 
-  (must preserve exactly — concurrent-login flow depends on this)
-- Remove console.error("authTkn", ...) — currently logs auth token every request
-
-**Other services this week:**
-- ConfigService, sessionStorageService, AuthService, dataService
-- ListnerService, OutboundListnerService, ConfirmationDialogsService, LoaderService
-- Establish RxJS 7 pipe(map(), catchError()) helper pattern
-
-### Week 3 (Jun 24–30) — Services Wave 1 (Auth/Common/Core)
-**Files:** loginService, authentication, authGuardService, common/*, 
-captcha-service, http-services, dialog
-
-**Per service:**
-- @angular/http → HttpClient
-- Remove .json() calls (HttpClient auto-parses)
-- URLSearchParams → HttpParams
-- Run rxjs-5-to-6-migrate codemod, hand-fix .pipe() sites
-- Convert guards → functional CanActivateFn / CanDeactivateFn
-
-### Week 4 (Jul 1–7) — Services Wave 2 (Clinical/Call)
-**Files:** callservices, caseSheetService, cdssService, snomedService,
-prescriptionServices, covidService, screening, searchBeneficiaryService,
-register-services, czentrix, socketService
-
-**Special fixes:**
-- register-services: hardcoded 10.152.3.152:1040 → ConfigService
-- socketService: make @Injectable, fix hardcoded 10.208.122.38:4000 → ConfigService
-
-### Week 5 (Jul 8–14) — Services Wave 3 + Directives/Pipes
-**Files:** sioService/*(7 services), supervisorServices/*(6), 
-outboundServices/*(4), report-services, callTypeReports, surveyorServices,
-coService/*, notificationService, adminServices/*(4), upload-services
-
-**Special fixes:**
-- adminServices: hardcoded localhost:8080 → ConfigService
-
-**Also this week:**
-- Migrate directives/ (password, mobile, email, name, address) → standalone: true
-- Migrate pipes (order-by.pipe, utc-date.pipe, custom-pipe) → standalone: true
-- Replace ng2-validation + ng2-custom-validation → built-in Validators
-
-**🏁 Milestone: All 65 services + directives/pipes compile on Angular 20**
-
-### Week 6 (Jul 15–21) — Auth/Shell Components + Routing
-**Files:** login, resetPassword, set-password, set-security-questions, 
-captcha, multi-role-screen, service-role-selection, dashboard-navigation,
-dashboard-row-header, dashboard-user-id, loader, app.component
-
-**Also this week:**
-- Replace RouterModule.forRoot (531-line app.module.ts) → provideRouter + 
-  lazy loadComponent routes
-- Wire three functional guards (AuthGuard, AuthGuard2, SaveFormsGuard)
-- Mechanical Md*→Mat* / md-*→mat-* rename only (no visual work)
-
-**🏁 Milestone: Login → role select → dashboard works on Angular 20**
-
-### Week 7 (Jul 22–28) — Core Call-Flow Components
-**Files:** dashboard, innerpage, 104 role switchboard, 104-ro, 
-beneficiary-registration-104, closure
-
-**Note:** These are jQuery-heavy (104-ro/hao/co ≈ 60+ jQuery calls each).
-Do minimal jQuery stabilization to run. Defer carousel/tabs/DOM rework to 
-Phase 2. Scope CUSTOM_ELEMENTS_SCHEMA per-component and fix unknown-element 
-errors it surfaces.
-
-### Week 8 (Jul 29–Aug 4) — Case-Sheet + CDSS + Role Components
-**Files:** case-sheet (+ all modals: cdssModal, case-sheet-covid-modal, 
-case-sheet-comp-modal, history, recentPrescription), algo-component, cdss,
-104-co, 104-mo, 104-hao, 104-pd, 104-counsellor, 104-consent/consent-form,
-prescription, schedule-appointment
-
-**Note:** CDSS → SNOMED → COVID chain is the densest logic in the app.
-
-### Week 9 (Aug 5–11) — Remaining Features + Phase 1 Hardening
-**Files:**
-- SIO: sio-services, sio-blood-on-call, organ-donation, epidemic-outbreak,
-  food-safety, scheme/upload-schemes, bal-vivah, grievience, information
-- Outbound: outbound-worklist, outbound-allocate/search-records, 
-  reallocate-calls, dial-beneficiary, agent-outboundcall
-- Supervisor: all supervisor-*-report, notifications, quality-audit, 
-  sms-template, configurations, emergency-contacts, force-logout
-- Misc: surveyor, covid-19, directory-services, knowledge-management, 
-  news/alerts, dashboard-reports
-
-**Also this week:**
-- Swap abandoned libs: angular2-toaster → ngx-toastr, 
-  angular2-csv → export-to-csv, upgrade ngx-pagination
-- Keep ng2-smart-table as interim (replaced in Phase 2)
-- Drop hammerjs (0 usages in codebase)
-- Remove CUSTOM_ELEMENTS_SCHEMA; fix surfaced unknown-element errors
-- Rewrite ~20 core specs against HttpClientTestingModule + standalone TestBed
-- Ticket remaining 90+ specs for later
-- Playwright smoke tests: login → call → closure
-
-**🏁 Phase 1 Milestone: Full app runs on Angular 20. No @angular/http. No RxJS 5.**
+Rebuilding lets us drop jQuery, the carousel-based screen switching, the deprecated HTTP stack, and the `md-*`/`md2` widget zoo in one clean pass while preserving the **API contracts and business logic** (which stay valid — only the UI/runtime layer changes).
 
 ---
 
-## Phase 2 — ZardUI Integration (Weeks 10–13, Aug 12 – Sep 10)
+## 2. What the old app does (functional map)
 
-### Week 10 (Aug 12–18) — ZardUI + Tailwind Foundation
-- Install + configure Tailwind CSS (content globs over src/, preflight 
-  tuned to coexist with Bootstrap 3)
-- ZardUI CLI + base setup
-- Define design tokens to match current bootstrap-phibonacci/theme.scss palette
-- Build shared UI-kit wrapper layer: button, input, select, form-field, dialog,
-  toast, table, pagination, tabs, datepicker, card
-- Re-point ConfirmationDialogsService → ZardUI dialog
-- Kill md2 first (391 refs / 74 files — no Material equivalent anyway):
-  datepicker/select/autocomplete/chips → ZardUI
+AMRIT Helpline 104 is a **health helpline call-center application**. Agents in different roles handle inbound and outbound calls, register beneficiaries, fill medical case sheets, and close calls. Supervisors run reports and configure the system.
 
-### Week 11 (Aug 19–25) — ZardUI Rollout Wave 1 (Shell + Call Flow)
-**Files:** login, multi-role-screen, dashboard, innerpage, 104-ro, 
-beneficiary-registration-104, closure, case-sheet core → ZardUI
+### 2.1 Roles
 
-- Replace jQuery Bootstrap carousel/tabs in 104-co/104-hao/104-sio 
-  with ZardUI tabs/stepper (eliminates largest jQuery clusters)
-- ng2-smart-table → ZardUI table where used
+| Code | Role | Responsibility |
+|---|---|---|
+| **RO** | Registration Officer | Beneficiary registration, search, eligibility, initial inbound handling |
+| **HAO** | Health Advice Officer | Health advice, counseling, lifestyle guidance |
+| **MO** | Medical Officer | Medical assessment, prescription, CDSS, clinical review |
+| **CO** | Complaint Officer | Complaints, referrals, feedback, categorization |
+| **Counsellor** | Health Counsellor | Detailed counseling, behaviour-change communication |
+| **PD** | Program Data | Data validation, reporting, QA |
+| **SIO** | Special Information Officer | Blood-on-call, epidemic, food safety, grievance, organ donation, schemes, information |
+| **Supervisor** | Supervisor | Agent monitoring, quality audit, reports, config, alerts, training |
+| **Surveyor** | Field Surveyor | Survey data, call-type reports |
 
-### Week 12 (Aug 26–Sep 1) — ZardUI Rollout Wave 2 (Remaining Features)
-**Files:** SIO services, outbound, supervisor reports (heavy tables + 
-datepickers + CSV export), surveyor, prescription, notifications, 
-sms-template, quality-audit
+A user can hold **multiple roles**; after login they pick a service + role on the **multi-role screen**, which determines which screens are shown (privileges come from `response.previlegeObj[]`, filtered to service `"104"`).
 
-- Once last component converted: remove jQuery, Bootstrap 3, tether, 
-  @angular/material, @angular/cdk (if unused), md2 from package.json
-- Tailwind purge; delete legacy per-component CSS covered by utilities
+### 2.2 Core workflows
 
-### Week 13 (Sep 2–10) — Hardening, QA, Cutover
-- Full visual-regression + a11y + responsive pass across all ~138 screens
-- Expand Playwright e2e to all role flows
-- Bundle-size + lazy-route check
-- Security cleanups: unencrypted authToken/apiman_key, empty encKey, 
-  always-true isAuthenticated()
-- Production build, WAR packaging parity, staging deploy, sign-off
-- Reserve ~2 days buffer for slippage
+**Inbound call pipeline:**
+`Incoming call (Czentrix CTI)` → `Beneficiary registration (RO)` → `Case sheet (HAO/MO/Counsellor)` → `Closure (call type / sub-type / followup)`
 
-**🏁 Phase 2 Milestone: QA complete, build parity, final sign-off**
+**Outbound pipeline:**
+`Worklist (pre-allocated by role)` → `Select record` → `Outbound call + case sheet` → `Closure` (with allocate / search / reallocate tooling)
+
+### 2.3 Feature inventory (old repo: 118 components, 60 services)
+
+- **Auth:** login (PBKDF2-SHA512 + AES client-side encryption, optional captcha), set-password, set-security-questions, reset-password
+- **Shell / dashboard:** multi-role-screen, service-role-selection, dashboard, dashboard-navigation, dashboard-row-header, dashboard-user-id, innerpage (carousel host)
+- **Inbound:** beneficiary-registration-104, case-sheet (+ covid/cancer/general/mcts/mmu variants), cheif-complaint-snomed-search, cdss / algo-component, prescription, closure, insert-complaint, bp-screening, diabetic-screening, schedule-appointment, consent
+- **Outbound:** outbond-worklist, agent-outbondcall, outbound-allocate-records, outbound-search-records, reallocate-calls, dial-beneficiary
+- **SIO sub-services:** blood-on-call, epidemic-outbreak, food-safety, grievience, information, organ-donation, scheme, sio-services-history, sio-outbound-provider
+- **Supervisor (~18):** call-summary / call-quality / calltype / complaint-detail / district-wise-call-volume / diseases-summary / quality / unblock-user reports; configurations, upload-schemes, alerts-notifications, notifications, emergency-contacts, training-resources, location-communication, blood-url, grievance; agent-status, block-unblock-number, force-logout, quality-audit
+- **Other reports:** medical-advise-report, mental-health-report, blood-on-call-detailed-report, surveyor-calltype-reports, covid-19, bal-vivah
+- **Shared:** loader, captcha, common-dialog, message-dialog, notifications-dialog, edit-notifications, rating, custom-pipe (search filter), order-by.pipe, utc-date.pipe, directives (validators)
+- **Integrations:** Czentrix CTI (iframe + service), Socket.io (real-time), SNOMED-CT coding, CDSS engine, i18n (`assets/i18n`)
+
+### 2.4 Services layer (key ones)
+
+`loginService`, `dataService` (central RxJS-subject state store), `AuthService`, `ConfigService`, `HttpServices`, `SearchService`, `RegisterService`, `CaseSheetService`, `CallServices`, `PrescriptionService`, `CDSSService`, `SnomedService`, `LocationService`, `SocketService`, `SessionService`, `LoaderService`, the four `Outbound*` services, six `sio*` services, ~10 `supervisor*` services, plus the HTTP plumbing (`http.interceptor.ts`, `http.securityinterceptor.ts`, `http.factory.ts`, `http.security.factory.ts`).
+
+> **Migration note:** `dataService` is a god-object using `Subject`/`BehaviorSubject` for cross-component state. In Angular 20 this becomes **small, focused signal stores** (e.g. `AuthStore`, `CallStore`, `RoleStore`), and the two HTTP interceptor classes collapse into **functional `HttpInterceptorFn`s** registered with `provideHttpClient(withInterceptors([...]))`.
 
 ---
 
-## Risk Register
+## 3. ZardUI: what it is and what it gives us
 
-| Risk | Severity | Week | Mitigation |
-|------|----------|------|------------|
-| Interceptor 5002/force-logout semantics | Critical | Wk2 | Pair-program; test concurrent-login early |
-| jQuery × ZardUI DOM collisions | High | Wk11 | Deferred by design; Playwright catches regressions |
-| ZardUI table gap | High | Wk1 | Spike Wk1; CDK fallback budgeted |
-| CUSTOM_ELEMENTS_SCHEMA removal | Medium | Wk9 | Budget 1–2 days for fixes |
-| Near-zero test safety net | High | All | Protect 20 core specs minimum |
+[ZardUI](https://zardui.com/) is the shadcn/ui equivalent for Angular: beautifully designed, accessible, **standalone, signal-based, OnPush, zoneless-ready** components built on **TypeScript + TailwindCSS v4 + Class Variance Authority (CVA)**. It is **free and open source**.
+
+- **Requirements:** Angular 19+ (our scaffold is 20.3 ✅), Node 20/22, **TailwindCSS v4**.
+- **Distribution model (shadcn-style):** the CLI **copies component source into our repo** (we own the code), it is not a black-box npm dependency.
+- **Important constraint:** ZardUI styles via **Tailwind v4 utility classes**, not SCSS component stylesheets. (See §6 for how we reconcile this with our SCSS scaffold.)
+
+### Available components (47)
+
+**Form & input:** Button, Input, Input Group, Form, Checkbox, Radio, Select, Combobox, Switch, Slider, Calendar, Date Picker
+**Layout & nav:** Accordion, Breadcrumb, Menu, Tabs, Divider, Resizable
+**Overlays:** Dialog, Alert Dialog, Sheet, Popover, Tooltip, Dropdown, Command
+**Feedback:** Alert, Toast, Progress Bar, Loader, Skeleton, Badge, Empty
+**Display:** Avatar, Card, Table, Icon
+**Misc:** Toggle, Toggle Group, Segmented, Pagination
+
+---
+
+## 4. ZardUI component mapping (old `md-*` / `md2` / 3rd-party → ZardUI)
+
+| Old widget | ZardUI equivalent | Notes |
+|---|---|---|
+| `md-button`, `md-raised-button` | **Button** | variants via CVA |
+| `md-input-container` + `mdInput` | **Input** + **Form** / **Input Group** | reactive forms |
+| `md-select` / `md-option` | **Select** | searchable → **Combobox** |
+| `md-radio-group` / `md-radio-button` | **Radio** | |
+| `md-checkbox` | **Checkbox** | |
+| `md-slide-toggle` | **Switch** | |
+| `md-datepicker`, md2 datepicker | **Date Picker** / **Calendar** | |
+| `md-dialog` (+ common-dialog, message-dialog) | **Dialog** / **Alert Dialog** | one reusable `ConfirmDialog` wrapper |
+| `md-tab-group` / `md-tab` | **Tabs** | |
+| `md-toolbar` | layout div + Tailwind | no 1:1; build header in `layout/` |
+| `md-sidenav` | **Sheet** (mobile) + **Menu** (desktop sidebar) | |
+| `md-icon` (material-design-icons) | **Icon** (lucide) | |
+| `md-chips` | **Badge** (+ small custom chip) | |
+| `md-tooltip` / `mdTooltip` | **Tooltip** | |
+| `md-menu` | **Dropdown** / **Menu** | |
+| `md-card` | **Card** | |
+| `md-list` | **Menu** / Tailwind list | |
+| `md-expansion-panel` | **Accordion** | |
+| `md-progress-spinner`, loader/ | **Loader** / **Progress Bar** / **Skeleton** | |
+| `md-snack-bar`, `angular2-toaster` | **Toast** | |
+| `md-stepper` (`MatStepperModule`) | **Tabs** or **Segmented** + custom step state | ZardUI has no stepper |
+| `md-button-toggle` | **Toggle Group** / **Segmented** | |
+| `md-grid-list` | Tailwind CSS grid | |
+| `ng2-smart-table` | **Table** + **Pagination** | build one reusable `DataTable` wrapper (sort/filter/paginate) — used widely in reports |
+| `ngx-pagination` | **Pagination** | |
+| `angular2-csv`, `xlsx`, `file-saver` | keep as **utilities** (export logic) | not UI; wrap in `shared/utils/export.ts` |
+| `captcha` (reCAPTCHA) | keep custom component | not a ZardUI concern |
+| jQuery carousel (innerpage) | Angular Router + **Tabs**/**Segmented** | remove jQuery entirely |
+
+> The single highest-leverage shared component to build early is a **reusable `DataTable`** (Table + Pagination + sort/filter), because the supervisor/reports area depends on it dozens of times.
+
+---
+
+## 5. Proposed folder structure (Angular 20 standalone)
+
+Feature-first, lazy-loaded. Each feature owns its routes and is loaded with `loadChildren` / `loadComponent`.
+
+```
+src/
+├─ app/
+│  ├─ core/                       # app-wide singletons (provided once)
+│  │  ├─ auth/
+│  │  │  ├─ auth.service.ts
+│  │  │  ├─ auth.store.ts         # signal store (token, user, current role)
+│  │  │  ├─ auth.guard.ts         # functional CanActivateFn
+│  │  │  └─ role.guard.ts
+│  │  ├─ http/
+│  │  │  ├─ auth.interceptor.ts   # HttpInterceptorFn (adds Authorization)
+│  │  │  ├─ error.interceptor.ts  # 401/403, global error handling
+│  │  │  └─ loader.interceptor.ts # show/hide global loader
+│  │  ├─ services/
+│  │  │  ├─ config.service.ts     # base URLs / environment
+│  │  │  ├─ session.service.ts    # timeout / keepalive
+│  │  │  ├─ socket.service.ts     # Socket.io real-time
+│  │  │  ├─ location.service.ts   # state/district/block/village
+│  │  │  └─ cti.service.ts        # Czentrix CTI
+│  │  ├─ models/                  # shared TS interfaces / API DTOs
+│  │  └─ tokens/                  # InjectionTokens
+│  │
+│  ├─ shared/                     # reusable, no business logic
+│  │  ├─ ui/                      # ← ZardUI components land here (per components.json alias)
+│  │  ├─ components/              # app-level reusable: data-table, page-header, confirm-dialog, file-export
+│  │  ├─ pipes/                   # order-by, utc-date, search-filter
+│  │  ├─ directives/              # validators (name, mobile, email, password strength)
+│  │  └─ utils/                   # export (csv/xlsx), crypto, date helpers
+│  │
+│  ├─ layout/                     # app shell: header, sidebar nav, shell component
+│  │
+│  ├─ features/
+│  │  ├─ auth/                    # login, set-password, reset-password, security-questions, captcha
+│  │  ├─ role-selection/          # multi-role-screen, service-role-selection
+│  │  ├─ dashboard/
+│  │  ├─ call/                    # INBOUND: innerpage shell, beneficiary-registration,
+│  │  │                           #          case-sheet, cdss/algo, snomed-search,
+│  │  │                           #          prescription, closure, insert-complaint, screenings
+│  │  ├─ outbound/                # worklist, outbound-call, allocate, search, reallocate
+│  │  ├─ sio/
+│  │  │  ├─ blood-on-call/
+│  │  │  ├─ organ-donation/
+│  │  │  ├─ food-safety/
+│  │  │  ├─ epidemic-outbreak/
+│  │  │  ├─ grievance/
+│  │  │  ├─ information/
+│  │  │  └─ scheme/
+│  │  ├─ supervisor/
+│  │  │  ├─ reports/
+│  │  │  └─ config/
+│  │  └─ reports/                 # surveyor, covid, mental-health, medical-advise, blood-on-call
+│  │
+│  ├─ app.config.ts               # providers (router, http, zoneless)
+│  ├─ app.routes.ts               # top-level lazy routes
+│  └─ app.ts                      # root component (shell outlet)
+│
+├─ environments/                  # environment.ts / environment.prod.ts
+└─ styles.css                    # global + Tailwind v4 entry (see §6)
+
+docs/
+└─ migration-plan.md              # this file
+```
+
+**Conventions**
+- Standalone components only; no NgModules.
+- Signals for component state; `inject()` over constructor DI where natural.
+- Reactive Forms for all forms.
+- One feature = one folder + one `*.routes.ts`, lazy-loaded.
+- `core/` provided once at root; `shared/` is import-only (no providers).
+
+---
+
+## 6. Tailwind v4 + SCSS reconciliation — RESOLVED (switched to CSS)
+
+The scaffold was generated with **SCSS** (`inlineStyleLanguage: scss`, `src/styles.scss`, per-component `.scss`). The `zard-cli init` command **hard-requires `src/styles.css`** (it refuses to run without it) — ZardUI/Tailwind v4 is CSS-first and does not support SCSS.
+
+**Decision made during setup:** standardize the project on **CSS**, not SCSS. Concretely:
+- `src/styles.scss` → `src/styles.css` (now holds `@import "tailwindcss";`, `@plugin "tailwindcss-animate";`, the `@custom-variant dark`, and the Neutral oklch theme tokens that init generated).
+- `src/app/app.scss` → `src/app/app.css`; `styleUrl` updated.
+- `angular.json`: `styles` → `src/styles.css`, `inlineStyleLanguage` → `css`, schematics `style` → `css` (so `ng g component` emits `.css`).
+- **Prefer Tailwind utility classes in templates** for layout/spacing/color (the ZardUI way); component `.css` files stay mostly empty.
+
+> This supersedes the original "keep `.scss`" recommendation — the CLI made CSS mandatory, and CSS is the correct long-term choice for a Tailwind-v4 project.
+
+### 6.1 What `zard-cli init` produced
+- Deps: `tailwindcss@4`, `@tailwindcss/postcss`, `tailwindcss-animate`, `postcss`, `class-variance-authority`, `clsx`, `tailwind-merge`, `@ng-icons/core`, `@ng-icons/lucide`, `@angular/cdk`.
+- Files: `.postcssrc.json`, themed `src/styles.css`, `components.json`, and ZardUI internal helpers under `src/app/shared/core/` (`string-template-outlet`, event-manager plugins, `providezard`) + `cn()` in `src/app/shared/utils/merge-classes.ts`.
+- `components.json` aliases were tuned: `components → @/shared/ui` (ZardUI primitives, kept separate from app-level composites in `@/shared/components`), `utils → @/shared/utils`, `core → @/shared/core`, `services → @/shared/services`. These aliases only drive the ZardUI CLI codegen; app code resolves `@/*` → `src/app/*` via tsconfig.
+
+### 6.2 Known issue — `@ng-icons` version skew
+`@ng-icons/core@33` / `@ng-icons/lucide@33` declare a peer of `@angular/common >=21`, while we are on Angular 20. Install resolves via `--legacy-peer-deps` and **the build + `ng serve` both pass cleanly**, but this is a watch-item: if icon issues appear, pin `@ng-icons/*` to the latest Angular-20-compatible major (≈ v31/v32) in `package.json`.
+
+---
+
+## 7. Migration order (priority tiers)
+
+Foundation before features; the call workflow is the product's core and comes before the long tail of reports.
+
+- **P0 — Foundation (must exist before any feature):** ZardUI + Tailwind install, theme, layout shell, config/environment, `HttpClient` + functional interceptors, `AuthStore`, session, loader, toast, routing skeleton, guards, reusable `DataTable` + `ConfirmDialog`.
+- **P1 — Critical path:** auth → role selection → dashboard → **inbound call workflow** (registration → case sheet → closure) → outbound workflow.
+- **P2 — Breadth:** SIO sub-services, supervisor reports & config.
+- **P3 — Long tail / stretch:** misc reports (surveyor, covid, mental-health, medical-advise), notifications, training resources, i18n parity, niche case-sheet variants.
+
+> **Honest scope note:** the old app has 118 components. A clean, well-tested rebuild of **P0 + P1 + a meaningful slice of P2** is a realistic, high-quality outcome for one intern in 13 weeks. P3 is explicitly stretch / handoff-documented, not a commitment.
+
+---
+
+## 8. Week-by-week plan (10 Jun – 10 Sep 2026)
+
+| Week | Dates | Focus | Deliverable / PR |
+|---|---|---|---|
+| **0–1** | Jun 10–16 | Study old repo, write this plan, **install ZardUI + Tailwind v4**, theme, base layout shell, folder structure | `chore: foundation + ZardUI setup` |
+| **2** | Jun 17–23 | Core infra: environments/config, `HttpClient` + auth/error/loader interceptors, `AuthStore`, session, loader, toast, reusable `DataTable` + `ConfirmDialog` | `feat: core http + state + shared UI` |
+| **3** | Jun 24–30 | **Auth**: login (PBKDF2/AES encryption), captcha, set-password, set-security-questions, reset-password | `feat: auth flows` |
+| **4** | Jul 1–7 | **Role selection**: multi-role-screen, service-role-selection, role/route guards, privilege-driven routing | `feat: role + service selection` |
+| **5** | Jul 8–14 | **Shell + dashboard**: navigation/sidebar, header, dashboard widgets, dialogs/notifications | `feat: app shell + dashboard` |
+| **6** | Jul 15–21 | **Inbound 1**: innerpage shell (router-based, no jQuery) + beneficiary-registration (RO) | `feat: beneficiary registration` |
+| **7** | Jul 22–28 | **Inbound 2**: case-sheet + SNOMED chief-complaint search + CDSS/algo | `feat: case sheet + cdss` |
+| **8** | Jul 29–Aug 4 | **Inbound 3**: prescription, closure, insert-complaint, screenings + **mid-project QA & demo** | `feat: prescription + closure` |
+| **9** | Aug 5–11 | **Outbound**: worklist, outbound-call, allocate / search / reallocate | `feat: outbound workflow` |
+| **10** | Aug 12–18 | **SIO services**: blood-on-call, organ-donation, food-safety, epidemic, grievance, information, scheme | `feat: sio services` |
+| **11** | Aug 19–25 | **Supervisor** reports (call-summary, calltype, quality, complaint, district, disease) + DataTable reuse | `feat: supervisor reports` |
+| **12** | Aug 26–Sep 1 | **Supervisor config** + misc reports (surveyor, covid, mental-health, medical-advise) + notifications/training | `feat: supervisor config + reports` |
+| **13** | Sep 2–10 | **Full QA**: accessibility, responsive, i18n, cross-role smoke tests, docs; final review → merge `angular-zard-migration` → `main` | `chore: QA + docs + release` |
+
+*(Weeks slip; reports in 11–12 and the P3 long tail are the buffer/stretch if earlier weeks run long.)*
+
+---
+
+## 9. Cross-cutting migration rules
+
+1. **Preserve API contracts.** Endpoints, request/response shapes, and auth/encryption behaviour stay identical — only the client UI/runtime changes. Verify each migrated call against the old service.
+2. **No jQuery, no Bootstrap carousel.** Screen switching becomes Angular Router + Tabs/Segmented.
+3. **HTTP:** `provideHttpClient(withInterceptors([authInterceptor, errorInterceptor, loaderInterceptor]))`. Port the 401/403 re-auth logic from `http.securityinterceptor.ts`.
+4. **State:** replace `dataService` subjects with focused signal stores.
+5. **Forms:** template-driven `ngModel` → Reactive Forms; port the custom validator directives.
+6. **Security:** keep client-side password encryption (CryptoJS PBKDF2-SHA512 + AES) and token-in-`sessionStorage` behaviour; confirm with mentor before changing.
+7. **Each PR:** small, one feature/slice, builds clean, includes the ZardUI mapping notes for any screen migrated.
+8. **QA gate:** nothing merges to `main` until the full cross-role QA pass at the end.
+
+---
+
+## 10. Open questions for mentor (Dr. Mithun James)
+
+1. ~~Global styles~~ — RESOLVED: switched to `styles.css` (zard-cli hard-required it, CSS is correct for Tailwind v4).
+2. ZardUI theme — default **Neutral**, or a Piramal/AMRIT brand palette?
+3. Is a backend/API instance available for local integration testing during the rebuild?
+4. Keep the existing client-side password encryption scheme as-is?
+5. Czentrix CTI: same iframe integration, or is a newer telephony approach planned?
+6. i18n: which languages must reach parity for the migration to be considered complete?
+7. Confirm scope expectation: P0+P1+partial P2 as the committed deliverable, P3 as stretch?
+
+---
+
+
+## 11. Current status
+
+Foundation is complete and committed locally:
+- Commit: `4875251` on branch `angular-zard-migration`
+- Angular 20 scaffold + ZardUI + Tailwind v4 + 8 starter components + folder structure — all verified (build passes, ng serve works)
+
+**Next:** Plan review + approval from Dr. Mithun James + Sneha Unki → write access to PSMRI/Helpline104-UI-NEXT → push foundation PR → start Week 2 (core HTTP interceptors + AuthStore + reusable DataTable).
