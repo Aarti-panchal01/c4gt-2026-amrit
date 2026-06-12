@@ -147,6 +147,45 @@ Current interceptors handle statusCode 5002 (force-logout) with a confirm-dialog
 - Test early + often (don't batch test to end of week)
 
 ---
+### B7: Write Access to PSMRI/Helpline104-UI-NEXT — Pending
+
+**Severity:** High | **Discovered:** Day 3 (Jun 12) | **Status:** 🚧 Pending
+
+**Issue:**
+Cannot push foundation commit or any PRs to PSMRI/Helpline104-UI-NEXT.
+Getting 403 when attempting to push.
+
+**Current Understanding:**
+- Repo is visible (can clone, read)
+- GitHub ID (Aarti-panchal01) shared with Dr. Mithun on Jun 12
+- Write access not yet granted
+- Foundation commit is ready locally (commit 4875251)
+
+**Next Steps:**
+1. Mention in Teams alongside plan review message
+2. Once granted — push angular-zard-migration branch
+3. Open foundation PR immediately
+
+**Mitigation:**
+- All local work is committed and safe
+- Not blocking analysis/planning work
+- Blocking only the push
+
+---
+
+### B8: Old Migration Plan in Docs Repo — RESOLVED
+
+**Severity:** Low | **Discovered:** Day 3 (Jun 12) | **Status:** ✅ Resolved
+
+**Issue:**
+docs/migration-plan.md described the old two-phase upgrade approach
+(Angular upgrade first, then ZardUI). This was incorrect after Jun 12
+Teams confirmation of fresh repo approach.
+
+**Resolution:**
+Replaced with new plan written by Claude Code after full codebase +
+ZardUI analysis. New plan reflects fresh repo, feature-by-feature
+migration, ZardUI from day one.
 
 ## Open Questions
 
@@ -214,6 +253,26 @@ Angular 4 predates signals/standalone components. Phase 1 + 2 will introduce the
 Yes. Angular 20 requires Node 18.17+; Node 22 is stable + recommended. Update to Node 22 in Wk1.
 
 ---
+
+### ✅ N3: ZardUI Table Coverage — Resolved
+
+**Status:** Resolved (Day 3 spike)
+
+**Answer:**
+ZardUI Table component exists and is installed. Sorting/filtering/pagination
+confirmed via docs. Plan is to build one reusable DataTable wrapper component
+(Week 2) used across all supervisor reports and outbound worklist screens.
+
+---
+
+### ✅ N4: ZardUI + Angular 20 Compatibility — Resolved
+
+**Status:** Resolved (Day 3 setup)
+
+**Answer:**
+ZardUI fully supports Angular 20. `npx zard-cli init` ran successfully.
+Build passes. ng serve works. One watch item: @ng-icons/core@33 declares
+peer of Angular ≥21 — resolves via --legacy-peer-deps, no build errors.
 
 ## Workarounds & Notes
 
