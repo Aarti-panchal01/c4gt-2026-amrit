@@ -10,7 +10,8 @@ This document defines conventions, architecture patterns, and guidance for Claud
 
 - **Scope:** 118 components, 65 services, 138 templates, single 530-line app.module.ts
 - **Internship period:** Jun 10 – Sep 10, 2026 (13 weeks)
-- **Code repo:** https://github.com/PSMRI/Helpline104-UI (migration branch: TBD — to be created after Jun 15 planning meeting)
+- **Code repo:** https://github.com/PSMRI/Helpline104-UI-NEXT
+- **Branch strategy:** `main` → `angular-zard-migration` (migration branch) → individual feature branches → PRs back into `angular-zard-migration` → merge to `main` only after full QA
 - **Documentation repo:** https://github.com/Aarti-panchal01/c4gt-2026-amrit (this repo)
 
 ---
