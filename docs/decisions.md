@@ -213,37 +213,82 @@ Once confirmed, they will move to the **CONFIRMED** section. Until then, treat a
 
 ---
 
-### D11: Monorepo for 104 + 1097 Migration
+## D11: Monorepo for 104 + 1097 — RESOLVED
 
-**Date:** Jun 11, 2026
-**Context:** Helpline1097-UI shares ~60-70% code with Helpline104-UI. 
-Another C4GT intern (Madhav Sharma) is doing 1097 simultaneously. 
-Gopi Kishan (Teams) proposed doing both together since we're starting fresh.
-Dr. Mithun is debating.
+**Date:** Jun 11–12, 2026
+**Context:** Helpline1097-UI shares ~60-70% code with Helpline104-UI.
+Another C4GT intern (Madhav Sharma) is doing 1097 simultaneously.
+**Decision:** ✅ RESOLVED — NOT a monorepo. Separate fresh projects.
 
-**Decision:** ⏳ PENDING — confirm with Dr. Mithun on Jun 15.
+**What was confirmed (Teams, Jun 12):**
+- 104 and 1097 are separate fresh repos (Helpline104-UI-NEXT, Helpline1097-UI-NEXT)
+- Each intern works independently on their own repo
+- No shared @amrit/common-ui library planned for now
+- Coordinate informally, not via shared codebase
 
-**Question:** Should 104 + 1097 be migrated together in a monorepo with 
-a shared @amrit/common-ui library?
+**Outcome:** ✅ Closed. Working independently on PSMRI/Helpline104-UI-NEXT.
 
-**Rationale for yes:**
-- ~60-70% shared code; migrating it twice is wasteful
-- 1097's token.interceptor.ts is the better HTTP layer starting point
-- Tier 1 files (Loader, SessionStorage, utc-date pipe, dialogs) are byte-identical
-- Setup cost is low since we're starting fresh anyway
-- Common-UI becomes a proper shared library from day one, not an afterthought
+---
 
-**Rationale for no:**
-- Adds coordination overhead between two interns
-- Scope creep risk for both projects
-- Each intern may move at different pace
+## D12: Fresh Repo Approach — CONFIRMED BY MENTOR
 
-**Impact if yes:** Coordinate with Madhav from Week 1. Build shared HTTP/auth 
-layer together. Start from 1097's token.interceptor.ts for HTTP layer.
+**Date:** Jun 12, 2026
+**Context:** Confirm whether to upgrade old code or start fresh
+**Decision:** ✅ CONFIRMED — Fresh Angular 20 repo, copy features one by one.
 
-**Impact if no:** Migrate independently; share learnings informally.
+**Confirmed by:** Dr. Mithun James (Teams, Jun 12)
+> "Since we are starting a fresh project, I suggest creating a clean Angular 20
+> repository with Zard UI set up first. Instead of upgrading the old code
+> (which has many outdated packages), we can copy features over one-by-one
+> and convert them to Zard UI as we go."
 
-**Outcome:** ⏳ PENDING — Jun 15 planning meeting.
+**This supersedes D1** (which described running old+new in parallel).
+New approach: build everything fresh in Helpline104-UI-NEXT, referencing
+old repo only as a source of business logic + API contracts.
+
+**Outcome:** ✅ Angular 20 scaffold created + committed on Jun 12.
+
+---
+
+## D13: Project Stylesheet — CSS (not SCSS)
+
+**Date:** Jun 12, 2026
+**Context:** Angular scaffold generated with SCSS; ZardUI requires CSS
+**Decision:** ✅ Switch global stylesheet from SCSS to CSS.
+
+**Rationale:**
+- `zard-cli init` hard-requires `src/styles.css` — refuses to run without it
+- ZardUI/Tailwind v4 is CSS-first; does not support SCSS
+- Component-level styling will be Tailwind utilities anyway (mostly empty .css files)
+
+**What changed:**
+- `src/styles.scss` → `src/styles.css`
+- `src/app/app.scss` → `src/app/app.css`
+- `angular.json`: `inlineStyleLanguage` → `css`, `styles` → `src/styles.css`
+
+**Outcome:** ✅ Done. Build passes, ng serve works.
+
+---
+
+## D14: ZardUI + Tailwind v4 — Installed and Configured
+
+**Date:** Jun 12, 2026
+**Context:** Foundation setup for Helpline104-UI-NEXT
+**Decision:** ✅ ZardUI installed with 8 starter components.
+
+**What was installed:**
+- `tailwindcss@4`, `@tailwindcss/postcss`, `tailwindcss-animate`
+- `class-variance-authority`, `clsx`, `tailwind-merge`
+- `@ng-icons/core` + `@ng-icons/lucide`, `@angular/cdk`
+- ZardUI components: Button, Input, Form, Dialog, Table, Pagination, Toast, Loader
+
+**Watch item:**
+- `@ng-icons/core@33` declares peer of Angular ≥21 (we're on 20)
+- Resolves via `--legacy-peer-deps`, build passes cleanly
+- Pin to v31/v32 if icon issues appear
+
+**Outcome:** ✅ Foundation committed locally (commit 4875251, branch angular-zard-migration).
+Pending push — write access to PSMRI/Helpline104-UI-NEXT needed.
 
 ---
 
