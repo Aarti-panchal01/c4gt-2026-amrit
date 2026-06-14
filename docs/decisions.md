@@ -292,6 +292,29 @@ Pending push — write access to PSMRI/Helpline104-UI-NEXT needed.
 
 ---
 
+## D15: Foundation PR #1 created (Jun 13, 2026)
+
+**Date:** Jun 13, 2026
+**Context:** Foundation scaffold ready, write access obtained
+**Decision:** ✅ Opened PR #1 on PSMRI/Helpline104-UI-NEXT
+
+**Outcome:** PR open, CodeRabbit reviewed (14 comments, mostly ZardUI library files). Awaiting Mithun review.
+Link: https://github.com/PSMRI/Helpline104-UI-NEXT/pull/1
+
+---
+
+## D16: Common-UI v2 strategy confirmed (Jun 14, 2026)
+
+**Date:** Jun 14, 2026
+**Context:** Gopi/Mithun Teams discussion on Common-UI upgrade approach
+**Decision:** ✅ Gopi handles Common-UI upgrade. 104-NEXT consumes v2 branch when ready.
+
+**Rationale:** Common-UI is shared with HWC and ECD — cannot upgrade in place. Mithun confirmed: copy src to v2 folder. No need for 104 to build separate standalone track.
+
+**Outcome:** Migration plan updated to v3. Monitor Gopi's angular-zard-migration branch on Common-UI.
+
+---
+
 ## Next Entry
 
 Add entries here as you make decisions during the internship. Format:

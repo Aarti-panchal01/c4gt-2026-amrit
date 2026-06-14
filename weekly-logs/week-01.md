@@ -47,6 +47,25 @@ Foundation committed locally, pending write access to push.
 - [x] Build passes ✅, ng serve works ✅
 - [x] Foundation committed locally (commit 4875251, branch angular-zard-migration)
 
+## Day 4 — June 13, 2026
+
+**Focus:** AMRIT platform setup, deep codebase analysis, foundation PR
+
+- Cloned all 6 AMRIT repos into AMRIT folder (Helpline104-UI, 1097-UI, Common-UI, Common-API, MMU-UI, Helpline104-API)
+- Claude Code ran deep analysis across all repos — key finding: Common-UI is NgModule/Material bound, cannot be directly consumed by Angular 20
+- Rewrote migration plan to v2 addressing all 5 mentor feedback points
+- Set up SSH key, resolved GitHub 403 write access issue
+- Created and pushed foundation PR #1 to PSMRI/Helpline104-UI-NEXT
+- Sent Teams update to Dr. Mithun + Sneha with PR and plan links
+
+## Day 5 — June 14, 2026
+
+**Focus:** Common-UI strategy update, Monday meeting prep
+
+- Read Teams conversation — Gopi handling Common-UI Angular 20 upgrade (v2 folder approach confirmed by Mithun)
+- Updated migration plan to v3 — Common-UI strategy now: consume Gopi's v2 branch when ready
+- Prepared for Monday meeting with Dr. Mithun James
+
 ---
 
 ## In Progress / Blocked 🚧

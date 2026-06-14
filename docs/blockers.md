@@ -147,29 +147,11 @@ Current interceptors handle statusCode 5002 (force-logout) with a confirm-dialog
 - Test early + often (don't batch test to end of week)
 
 ---
-### B7: Write Access to PSMRI/Helpline104-UI-NEXT — Pending
 
-**Severity:** High | **Discovered:** Day 3 (Jun 12) | **Status:** 🚧 Pending
-
-**Issue:**
-Cannot push foundation commit or any PRs to PSMRI/Helpline104-UI-NEXT.
-Getting 403 when attempting to push.
-
-**Current Understanding:**
-- Repo is visible (can clone, read)
-- GitHub ID (Aarti-panchal01) shared with Dr. Mithun on Jun 12
-- Write access not yet granted
-- Foundation commit is ready locally (commit 4875251)
-
-**Next Steps:**
-1. Mention in Teams alongside plan review message
-2. Once granted — push angular-zard-migration branch
-3. Open foundation PR immediately
-
-**Mitigation:**
-- All local work is committed and safe
-- Not blocking analysis/planning work
-- Blocking only the push
+## B7 — GitHub write access to PSMRI/Helpline104-UI-NEXT
+**Status: RESOLVED (Jun 13, 2026)**
+Joined PSMRI org via invite email. SSH key set up. Push successful.
+Foundation PR #1 created.
 
 ---
 
