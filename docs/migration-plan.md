@@ -8,10 +8,10 @@
 > **Timeline:** Migration **complete by mid-August 2026**; **September = cleanup, deployment, QA, testing**
 
 This revision (v2) rewrites the original AI-drafted plan to address Dr. Mithun James's review of 12 Jun 2026:
-(1) a concrete **validation / anti-stub checklist** per module, (2) folder structure **aligned to AMRIT
-conventions** (`src/app/app-modules/…`, studied from MMU-UI and Common-UI), (3) a **Common-UI shared-component
-strategy** (push shared code to PSMRI/Common-UI, not just into this app), (4) a **mid-August** timeline with
-September reserved for cleanup/deploy/QA, and (5) an explicit **Claude Code subagent PR-review process**.
+(1) a concrete **validation / anti-stub checklist** per module, 
+(2) folder structure **aligned to AMRIT conventions** (`src/app/app-modules/…`, studied from MMU-UI and Common-UI), 
+(3) a **Common-UI shared-component strategy** (consume Gopi's Common-UI v2 branch when ready),
+(4) a **mid-August** timeline with September reserved for cleanup/deploy/QA, and (5) an explicit **Claude Code subagent PR-review process**.
 
 ---
 
@@ -144,13 +144,20 @@ Helpline1097-UI (same Angular 4.4.4, same flat structure) shares **~42 same-name
 104-only = clinical (case-sheet, CDSS, SNOMED, prescription, screenings) + SIO + surveyor. 1097-only = Everwell outbound, grievance, CO counselling, demographic reports. **The shared shell/auth/session/dialog/dashboard layer is the extraction target.**
 
 ### 5.3 Approach
-Because Common-UI is Material/NgModule-bound, we **cannot** simply import it. Instead:
-1. **Add Common-UI as a submodule** to Helpline104-UI-NEXT now (matches AMRIT convention; gives reference + access to the framework-agnostic bits). Consume the **`tracking`** services directly (already cleanly published) and **port `SessionStorageService`'s encryption contract** so encrypted sessionStorage stays byte-compatible with MMU/1097.
-2. **Build the shared shell/auth/session/dialog/dashboard as standalone + ZardUI components inside 104-NEXT first** (proving ground), in a clearly-marked `app-modules/core` + `shared/` location designed to be lifted out.
-3. **Contribute those standalone versions back to `PSMRI/Common-UI`** as a **new standalone track** so 1097 and MMU adopt them as they migrate — rather than each app re-duplicating. **This needs a Common-UI versioning decision** (new folder e.g. `src/standalone/`, or a `next` branch) — *coordinate with Dr. Mithun James + Madhav + Gopi.*
-4. **Theme** (confirmed): **Piramal blue/white**, healthcare-friendly — defined once as ZardUI/Tailwind theme tokens in 104-NEXT and shared back to Common-UI. Coordinate palette with Madhav + Gopi.
 
-> **Open coordination item for mentor:** approve the "Common-UI gets a standalone track that 104-NEXT seeds" model, and the versioning mechanism (branch vs folder). Until approved, 104-NEXT keeps shared code in a lift-out-ready shape but does not fork Common-UI.
+Because Common-UI is Material/NgModule-bound, we cannot simply import it. Instead:
+
+1. **Consume Gopi's Common-UI v2** — Gopi (MMU intern) is upgrading Common-UI to Angular 20 on an `angular-zard-migration` branch with a `v2/` folder structure (Mithun confirmed: copy existing src to v2 to start). Once ready, 104-NEXT will consume it directly.
+
+2. **Port `SessionStorageService` encryption contract** — keep encrypted sessionStorage byte-compatible with MMU/1097 regardless of Common-UI version.
+
+3. **Consume `tracking` now** — the only cleanly published piece of Common-UI; wire it in P0 foundation.
+
+4. **Build shared shell/auth/session/dialog as standalone + ZardUI inside 104-NEXT** — in `app-modules/core/components/`, designed to be lifted out later if needed.
+
+5. **Theme** (confirmed): Piramal blue/white — coordinate palette with Madhav + Gopi.
+
+> **Coordination:** Monitor Gopi's Common-UI v2 branch. No need to fork or seed a separate standalone track — consume his work when ready.
 
 ---
 
@@ -309,7 +316,7 @@ Each reviewer returns structured findings with **severity (High / Medium / Low)*
 
 Foundation before features; the call workflow is the product core and comes before the long tail of reports.
 
-- **P0 — Foundation:** ZardUI + Tailwind, Piramal theme, layout shell, environments/config (UAT), `HttpClient` + functional interceptors, `AuthStore`, session, loader, toast, routing skeleton, guards, Common-UI submodule + `tracking`, **no-stub check + PR template + subagent review wiring**, reusable `DataTable` + `ConfirmDialog`.
+- **P0 — Foundation:** re-align scaffold to `app-modules/` convention + remove `core/tokens/`, add Common-UI submodule + `tracking`, set Piramal theme, environments/config (UAT), `HttpClient` + functional interceptors, `AuthStore`, session, loader, toast, routing skeleton, guards, no-stub check + PR template + subagent review wiring, reusable `DataTable` + `ConfirmDialog`.
 - **P1 — Critical path:** auth → role selection → dashboard → **inbound call workflow** (registration → case sheet → closure) → outbound workflow.
 - **P2 — Breadth:** SIO sub-services, supervisor reports & config.
 - **P3 — Long tail / stretch:** misc reports (surveyor, covid, mental-health, medical-advise), notifications, training resources, full i18n parity, niche case-sheet variants.
@@ -359,10 +366,9 @@ Foundation before features; the call workflow is the product core and comes befo
 ## 14. Open items for mentor (Dr. Mithun James)
 
 1. **CTI:** confirm whether an iframe softphone exists, or "iframe" was imprecise and the REST `czentrix.service` integration is the whole story (§2.4).
-2. **Common-UI standalone track:** approve the model where 104-NEXT seeds standalone/ZardUI shared components that get contributed back to `PSMRI/Common-UI` for 1097/MMU — and the versioning mechanism (new folder vs `next` branch) (§5.3).
-3. **Piramal theme palette:** confirm exact blue/white tokens with Madhav + Gopi.
-4. **UAT access:** confirm UAT base URLs (`ip104`, `commonAPI`, `telephoneServer`) and test credentials for integration testing.
-5. **Scope commitment:** confirm P0 + P1 + partial P2 by mid-August as the deliverable, P3 as stretch/handoff.
+2. **Piramal theme palette:** confirm exact blue/white tokens with Madhav + Gopi.
+3. **UAT access:** confirm UAT base URLs (`ip104`, `commonAPI`, `telephoneServer`) and test credentials for integration testing.
+4. **Scope commitment:** confirm P0 + P1 + partial P2 by mid-August as the deliverable, P3 as stretch/handoff.
 
 ---
 
