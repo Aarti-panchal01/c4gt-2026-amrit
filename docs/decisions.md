@@ -315,6 +315,18 @@ Link: https://github.com/PSMRI/Helpline104-UI-NEXT/pull/1
 
 ---
 
+## D17: Common-UI v2 consumption timing (Jun 15, 2026)
+
+**Date:** Jun 15, 2026
+**Context:** Mithun asked if shared/ui ZardUI components should go to Common-UI
+**Decision:** Wait for Gopi's standalone + ZardUI migration on Common-UI v2 to complete, then move shared/ui there.
+
+**Rationale:** Gopi's v2 is Angular 19, our ZardUI is Angular 20. Moving now would cause compatibility issues. Gopi plans standalone PR today + ZardUI branch after.
+
+**Outcome:** Monitor Gopi's angular-zard-migration branch. Move shared/ui to Common-UI v2 when stable.
+
+---
+
 ## Next Entry
 
 Add entries here as you make decisions during the internship. Format:

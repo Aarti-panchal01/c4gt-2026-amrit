@@ -169,6 +169,23 @@ Replaced with new plan written by Claude Code after full codebase +
 ZardUI analysis. New plan reflects fresh repo, feature-by-feature
 migration, ZardUI from day one.
 
+---
+
+## B9: shared/ui ZardUI components — pending Common-UI v2 stability
+
+**Severity:** Low | **Discovered:** Jun 15, 2026 | **Status:** 🟡 Waiting
+
+**Issue:** Mithun asked shared/ui ZardUI components to go to Common-UI so all 3 teams can reuse. But Gopi's Common-UI v2 is Angular 19, not Angular 20 + ZardUI yet.
+
+**Next Steps:**
+1. Wait for Gopi's standalone migration PR
+2. Wait for Gopi's zard-ui branch to merge into angular-zard-migration
+3. Then move shared/ui to Common-UI v2
+
+**Mitigation:** shared/ui stays in 104-NEXT for now, designed to be lifted out.
+
+---
+
 ## Open Questions
 
 ### Q1: ZardUI CLI + Version Management
