@@ -185,6 +185,24 @@ migration, ZardUI from day one.
 **Mitigation:** shared/ui stays in 104-NEXT for now, designed to be lifted out.
 
 ---
+## B11: P0 Core Foundation Follow-ups (Jun 17, 2026)
+
+**Severity:** Medium | **Discovered:** Jun 17, 2026 | **Status:** 🟡 Resolve when login/routing lands
+
+**Issue:** Subagent review caught 4 gaps in core foundation — not blockers for P0 commit but must resolve before login works end-to-end.
+
+**Follow-ups:**
+1. Restore 5002 "logout-from-other-device" confirm path in error interceptor — old app had two branches (kick other session vs hard logout), new code only has hard logout
+2. /login route missing — SessionService redirects there but route doesn't exist yet, user stranded on current page
+3. Login must call AuthStore.setSession() — not write sessionStorage directly (interceptor reads signal, not storage)
+4. Wire real ZardUI dialog + spinner UI — currently window.alert/confirm stubs
+
+**Next Steps:**
+1. Fix 1+2+3 when login component is built (P1)
+2. Fix 4 when ConfirmDialog component is wired up
+
+**Mitigation:** Foundation works for P0. These only matter when login/routing/dialog are live.
+---
 
 ## Open Questions
 

@@ -1,13 +1,13 @@
 # Week 1 — Jun 10–16, 2026
 
-**Status:** 🚧 IN PROGRESS
+**Status:** ✅ COMPLETE
 
 ---
 
 ## Summary
 Codebase analysis complete. Angular 20 scaffold created. ZardUI installed
-and configured. Migration plan written. Team confirmed fresh repo approach.
-Foundation PR #1 open — LGTM from Mithun ✅
+and configured. Migration plan v3 written. Foundation PR #1 open — LGTM 
+from Mithun ✅. ZardUI components added to Common-UI v2 — PR #49 merged ✅.
 
 ---
 
@@ -70,37 +70,48 @@ Foundation PR #1 open — LGTM from Mithun ✅
 - [x] Fixed all CodeRabbit comments
 - [x] Added GPL-3.0 license headers to all authored files
 - [x] Fixed "Integrated Technology" → "Integrated Technologies" typo
-- [x] Coordinated with Gopi on Common-UI v2 — will consume shared/ui after his migration
+- [x] Coordinated with Gopi on Common-UI v2
 - [x] PR #1 — LGTM from Mithun ✅
+
+**Day 7 (Jun 16):**
+- [x] Added ZardUI components to Common-UI v2/ui/ (8 components)
+- [x] Fixed all import paths + GPL-3.0 headers + peer deps README
+- [x] Ran subagent review before committing — all clear
+- [x] PR #49 opened + approved by Mithun + merged ✅
+- [x] Coordinated with Gopi on shared AMRIT theme (#0277bd blue/white)
 
 ---
 
-## In Progress / Blocked 🚧
-- [ ] shared/ui → Common-UI v2 (waiting for Gopi's standalone + ZardUI migration — B9)
-- [ ] prod/test hostnames still placeholders (waiting backend confirmation)
+## Resolved Blockers ✅
+- B7: GitHub write access — resolved Jun 13
+- B8: Old migration plan — resolved Jun 12
+- B9: shared/ui → Common-UI v2 — resolved Jun 16 (PR #49 merged)
+
+## Still Open 🚧
+- prod/test hostnames still placeholders (waiting backend confirmation)
+- Gopi's AMRIT theme file — waiting to apply to styles.css
 
 ---
 
 ## Learnings & Gotchas 💡
 - Fresh repo approach confirmed — NOT ng update
 - ZardUI hard-requires CSS not SCSS — switched global stylesheet (D13)
-- @ng-icons/core@33 has Angular ≥21 peer dep — resolves via legacy-peer-deps,
-  not breaking, but watch it
+- @ng-icons/core@33 has Angular ≥21 peer dep — resolves via legacy-peer-deps
 - ZardUI CLI copies component source into repo (shadcn-style) — you own the code
-- merge vs rebase: use rebase to sync feature branch with main updates,
-  merge (via PR) to land work into angular-zard-migration
+- merge vs rebase: use rebase to sync, merge (via PR) to land work
 - Zoneless Angular 20 — no zone.js, better performance
 - UAT app requires live CTI call to access case-sheet/closure screens
-- AMRIT GPL-3.0 header typo — "Integrated Technologies" not "Technology"
-- environment.ts is gitignored in AMRIT convention — devs cp from environment.local.ts
-- Subagents: figure out by doing, not planning — first real review caught real issues
+- AMRIT GPL-3.0 header — "Integrated Technologies" not "Technology"
+- environment.ts is gitignored — devs cp from environment.local.ts
+- Subagents: figure out by doing — first real review caught real issues
+- Common-UI is pure source submodule — type-check happens in host app
 
 ---
 
 ## Risks Identified ⚠️
 - @ng-icons version skew (watch item, not blocking)
-- Scope: 118 components in 13 weeks — P0+P1+partial P2 is realistic commitment
-- shared/ui move to Common-UI depends on Gopi's timeline
+- Scope: 118 components in 13 weeks — P0+P1+partial P2 is realistic
+- Theme dependency on Gopi — blocking final PR #1 merge
 
 ---
 
@@ -110,10 +121,12 @@ Foundation PR #1 open — LGTM from Mithun ✅
 - New scaffold files committed: 93
 - MCPs configured: 3 (Context7, Playwright, Chrome built-in)
 - PR #1 commits: 8
+- PRs merged: PR #49 (Common-UI)
 
 ---
 
-## Next Week's Plan
-- Wait for Gopi's standalone migration PR on Common-UI v2
-- Start Week 2: core HTTP interceptors, AuthStore, reusable DataTable
+## Week 2 Goals
+- Apply Gopi's AMRIT theme → merge PR #1
+- Complete P0: login component, routing skeleton
+- Start P1: auth flows
 - Confirm prod/test hostnames with backend team

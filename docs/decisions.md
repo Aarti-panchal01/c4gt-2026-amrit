@@ -327,6 +327,23 @@ Link: https://github.com/PSMRI/Helpline104-UI-NEXT/pull/1
 
 ---
 
+## D18: P0 Core Foundation Decisions (Jun 17, 2026)
+
+**Date:** Jun 17, 2026
+**Context:** Building HTTP interceptors, AuthStore, SessionService
+
+**Decisions made:**
+- Token = `response.key`, sent raw as `Authorization` (no Bearer) — matches 104 API
+- `useApimanKey` default true — 104 uses APIMAN gateway (?apikey= param)
+- Dialog stubbed for now (window.alert/confirm) — wire real ZardUI dialog later
+- Logout redirect target in `core.constants.ts` (LOGIN_ROUTE = '/login')
+- 5002 "logged-in-elsewhere" confirm path deferred to login PR
+
+**Outcome:** ✅ Committed 241457d on angular-zard-migration. Build passes.
+
+---
+
+
 ## Next Entry
 
 Add entries here as you make decisions during the internship. Format:
