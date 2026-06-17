@@ -171,37 +171,28 @@ migration, ZardUI from day one.
 
 ---
 
-## B9: shared/ui ZardUI components — pending Common-UI v2 stability
+## B9: shared/ui ZardUI components — RESOLVED (Jun 17, 2026)
 
-**Severity:** Low | **Discovered:** Jun 15, 2026 | **Status:** 🟡 Waiting
+**Status:** ✅ RESOLVED
 
-**Issue:** Mithun asked shared/ui ZardUI components to go to Common-UI so all 3 teams can reuse. But Gopi's Common-UI v2 is Angular 19, not Angular 20 + ZardUI yet.
-
-**Next Steps:**
-1. Wait for Gopi's standalone migration PR
-2. Wait for Gopi's zard-ui branch to merge into angular-zard-migration
-3. Then move shared/ui to Common-UI v2
-
-**Mitigation:** shared/ui stays in 104-NEXT for now, designed to be lifted out.
+**Resolution:** Added Common-UI as git submodule. src/app/shared/ui/ deleted. ZardUI now consumed via @common-ui/ui/ alias from Common-UI v2.
 
 ---
+
 ## B11: P0 Core Foundation Follow-ups (Jun 17, 2026)
 
-**Severity:** Medium | **Discovered:** Jun 17, 2026 | **Status:** 🟡 Resolve when login/routing lands
-
-**Issue:** Subagent review caught 4 gaps in core foundation — not blockers for P0 commit but must resolve before login works end-to-end.
+**Severity:** Medium | **Discovered:** Jun 17, 2026 | **Status:** 🟡 Partially resolved
 
 **Follow-ups:**
-1. Restore 5002 "logout-from-other-device" confirm path in error interceptor — old app had two branches (kick other session vs hard logout), new code only has hard logout
-2. /login route missing — SessionService redirects there but route doesn't exist yet, user stranded on current page
-3. Login must call AuthStore.setSession() — not write sessionStorage directly (interceptor reads signal, not storage)
-4. Wire real ZardUI dialog + spinner UI — currently window.alert/confirm stubs
+1. ✅ /login route — now registered in app.routes.ts (commit 3536d97)
+2. ✅ Login calls AuthStore.setSession() — implemented correctly in login component
+3. 🟡 5002 "logout-from-other-device" confirm path — still deferred, only hard logout implemented
+4. 🟡 Wire real ZardUI dialog + spinner UI — window.* stubs still in place
 
 **Next Steps:**
-1. Fix 1+2+3 when login component is built (P1)
-2. Fix 4 when ConfirmDialog component is wired up
+- Fix 3 when role-selection + session flows are tested end-to-end
+- Fix 4 when ConfirmDialog is wired to real UI
 
-**Mitigation:** Foundation works for P0. These only matter when login/routing/dialog are live.
 ---
 
 ## Open Questions

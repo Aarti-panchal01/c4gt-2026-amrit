@@ -343,6 +343,28 @@ Link: https://github.com/PSMRI/Helpline104-UI-NEXT/pull/1
 
 ---
 
+## D19: Common-UI as Git Submodule (Jun 17, 2026)
+
+**Date:** Jun 17, 2026
+**Context:** Mithun asked if Common-UI was being added as submodule and ZardUI imported from there.
+
+**Decision:** Add Common-UI as git submodule pointing to angular-zard-migration branch. Import ZardUI via @common-ui/ui/ alias. Remove local src/app/shared/ui/.
+
+**Rationale:**
+- Central place for shared UI components across 104, 1097, MMU
+- Design language consistency across all AMRIT apps
+- Mithun confirmed: "that's the whole point of having components at central place"
+
+**What changed:**
+- Common-UI added as submodule at repo root
+- tsconfig: "@common-ui/*": ["Common-UI/v2/*"]
+- src/app/shared/ui/ deleted (31 files) — build still passes
+- HTTPS URL used (not SSH) — required for CI
+
+**Outcome:** ✅ Committed. PR #1 updated. Build passes.
+
+---
+
 
 ## Next Entry
 
