@@ -195,6 +195,30 @@ migration, ZardUI from day one.
 
 ---
 
+## B12: UAT/DEV Base URLs — RESOLVED (Jun 15, 2026)
+
+**Status:** ✅ RESOLVED
+
+**Resolution:** Confirmed by Sneha Unki (Teams, Jun 15):
+- UAT: https://uatamrit.piramalswasthya.org/
+- DEV: https://amritwprdev.piramalswasthya.org/
+Updated in environment.dev.ts. CTI (telephoneServer) URL and 104api path suffix still unconfirmed — needed before first deploy.
+
+---
+
+## B13: "Powered by: WIPRO" Footer Text (Jun 20, 2026)
+
+**Severity:** Low | **Discovered:** Jun 20, 2026 | **Status:** 🟡 Waiting for Mithun confirmation
+
+**Issue:**
+Dashboard footer shows "Powered by: WIPRO" — carried over from legacy UAT app. Unsure if this is a contractual requirement or outdated.
+
+**Next Steps:**
+- Ask Mithun: keep, update, or remove?
+- Do not change until confirmed.
+---
+
+
 ## Open Questions
 
 ### Q1: ZardUI CLI + Version Management

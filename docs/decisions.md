@@ -365,6 +365,38 @@ Link: https://github.com/PSMRI/Helpline104-UI-NEXT/pull/1
 
 ---
 
+## D20: Signal-based i18n Service (Jun 20, 2026)
+
+**Date:** Jun 20, 2026
+**Context:** Dashboard needs runtime language switching across 24 languages
+**Decision:** Build a signal-based i18n service with sessionStorage persistence. 3 working locales (en/hi/as); non-implemented languages show "coming soon" alert matching UAT behavior.
+
+**Outcome:** ✅ Implemented in PR #3. 64 keys × 3 locales. Every binding uses `| translate : lang()`.
+
+---
+
+## D21: Absolute Sidebar Layout (Jun 20, 2026)
+
+**Date:** Jun 20, 2026
+**Context:** Sidebar must not push main content — full-width header/footer required
+**Decision:** Sidebar is `position: absolute` — does not affect document flow. Content stays full-viewport-width.
+
+**Trade-off:** Below ~1264px sidebar can overlay content left edge. Acceptable for desktop agent target (≥1280px).
+
+**Outcome:** ✅ Implemented in PR #3.
+
+---
+
+## D22: Feedback Page Post-Logout (Jun 20, 2026)
+
+**Date:** Jun 20, 2026
+**Context:** UAT navigates to /feedback?sl=104 after logout with a feedback form
+**Decision:** Build FeedbackComponent at /feedback?sl=104. Session cleared before navigating. Feedback API POST not wired yet — no confirmed endpoint. Submit navigates to /login.
+
+**Outcome:** ✅ Implemented in PR #3. API wiring deferred to P2.
+
+---
+
 
 ## Next Entry
 
