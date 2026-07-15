@@ -1,11 +1,11 @@
 # Week 2 — Jun 17–23, 2026
 
-**Status:** 🚧 IN PROGRESS
+**Status:** ✅ COMPLETE
 
 ---
 
 ## Summary
-P0 complete. Full dashboard built with UAT parity across all 4 roles. PR #1 + PR #2 merged. PR #3 open for Mithun's review.
+P0 complete. Full dashboard built with UAT parity across all 4 roles. PR #1 + PR #2 merged. PR #3 opened, reviewed by both Mithun (functionality — approved) and Sneha (7 UI feedback points — all addressed); merged Jun 24 (week 3).
 
 ---
 
@@ -46,10 +46,28 @@ P0 complete. Full dashboard built with UAT parity across all 4 roles. PR #1 + PR
 - [x] Fixed all CodeRabbit findings (supervisor toggle, LOGIN_ROUTE, null agentId)
 - [x] PR #3 opened ✅ https://github.com/PSMRI/Helpline104-UI-NEXT/pull/3
 
+**Day 12 (Jun 21):**
+- [x] Fixed CodeRabbit Major (supervisor excluded from campaign toggle) + Minor findings (LOGIN_ROUTE import, null agentId comment)
+- [x] Deep UAT comparison of all 4 roles via Playwright audit
+- [x] Built remaining dashboard sections: sidebar, header fixes, 24-language selector, alerts, reports, activity, rating panels, footer, feedback page
+- [x] Updated PR #3 description with technical summary + 3 screenshots; pinged Mithun for review
+
+**Day 13 (Jun 22):**
+- [x] Sent weekly status report on Teams (Week 1 + Week 2 summary)
+- [x] Coordinated with Gopi (Select component) + asked Mithun for a Common-UI component assignment
+- [x] Studied Gopi's MMU-UI weekly report format; added GitHub repo description
+
+**Day 14 (Jun 23):**
+- [x] Mithun approved PR #3 (TypeScript i18n approach confirmed)
+- [x] Addressed all 7 of Sneha's UI feedback points (flat cards, View All links, light gray sidebar, WIPRO removal, white logo, role-selection polish, responsive breakpoints, 5002 dialog, compact notifications)
+- [x] Emergency contacts icon → phone icon (lucidePhone)
+- [x] Filled C4GT weekly contributor check-in form
+- [x] Pushed final fixes — PR #3 at 6 commits, awaiting final approval
+
 ---
 
 ## In Progress / Blocked 🚧
-- [ ] PR #3 waiting for Mithun review
+- [ ] PR #3 awaiting final Mithun + Sneha approval (→ merged Jun 24, week 3)
 - [ ] 5002 "logged-in-elsewhere" real ZardUI dialog (B11 item 3) — deferred to auth-flows PR
 - [ ] window.confirm stubs → real ZardUI dialog (B11 item 4) — deferred
 - [ ] "Powered by: WIPRO" footer — waiting for Mithun confirmation on whether to keep
